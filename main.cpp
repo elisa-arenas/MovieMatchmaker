@@ -39,7 +39,13 @@ int main() {
         }
     }
 
-    ifstream inFile("movielens.csv");
+    ifstream inFile;
+    inFile.open("movielens.csv");
+
+    if(!inFile.is_open()) {
+        cout << "Failed to open file." << endl;
+        return 1;
+    }
     string lineFromFile;
 
     getline(inFile, lineFromFile);
@@ -75,7 +81,7 @@ int main() {
         Movie movie1(movie, year, genres, rating);
 
         for(int i=0; i<5; i++){
-            //cout << movie1.getTitle() << endl;
+            cout << movie1.getTitle() << endl;
         }
 
     }
