@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
 #include "Movie.h"
 
 using namespace std;
@@ -36,5 +38,47 @@ int main() {
             cout << "Beginning Quick Sort by Genre...." << endl;
         }
     }
+
+    ifstream inFile("movielens.csv");
+    string lineFromFile;
+
+    getline(inFile, lineFromFile);
+
+    while(getline(inFile, lineFromFile)){
+
+        stringstream stream(lineFromFile);
+        string ignore;
+        getline(stream, ignore, ',');
+        string ignore2;
+        getline(stream, ignore2, ',');
+
+        string movie;
+        getline(stream, movie, ',');
+
+        string yearTemp;
+        getline(stream, yearTemp, ',');
+        int year = stoi(yearTemp);
+
+        vector<string> genres;
+        string genre;
+        getline(stream, genre, '|');
+        genres.push_back(genre);
+
+
+        string ratingTemp;
+        getline(stream, ratingTemp, ',');
+        double rating = (double)stoi(ratingTemp);
+
+        string time;
+        getline(stream, time);
+
+        Movie movie1(movie, year, genres, rating);
+
+        for(int i=0; i<5; i++){
+            //cout << movie1.getTitle() << endl;
+        }
+
+    }
+
     return 0;
 }

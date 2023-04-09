@@ -15,6 +15,7 @@ private:
 
 public:
     Movie(string &_title, int &_year, vector<string> &_genres, double &_rating);
+    string getTitle();
 
 
 };

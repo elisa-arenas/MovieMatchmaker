@@ -11,3 +11,7 @@ Movie::Movie(string &_title, int &_year, vector<string> &_genres, double &_ratin
     rating = _rating;
 
 }
+
+string Movie::getTitle() {
+    return title;
+}
