@@ -93,6 +93,12 @@ int main() {
 
         Movie movieObj(title, year, genres, rating);
 
+      /*  cout << movieObj.title << " " << movieObj.year <<" ";
+        for (int i = 0; i < movieObj.genres.size(); i++){
+            cout << movieObj.genres[i] << " ";
+        }
+        cout << rating << endl;*/
+
     }
 
     return 0;
