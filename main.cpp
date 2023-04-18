@@ -92,13 +92,7 @@ int main() {
         getline(stream, ignore);  // ignoring timestamp
 
         Movie movieObj(title, year, genres, rating);
-
-    /*    // PRINT TESTING THAT EVERYTHING SAVED TO MOVIE OBJ CORRECTLY!!!
-        cout << movieObj.title << "," << movieObj.year << ",";
-        for (const auto & genre : movieObj.genres){
-            cout << genre << " ";
-        }
-        cout << "," << rating << endl;*/
+        
     }
 
     return 0;
