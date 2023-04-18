@@ -92,7 +92,7 @@ int main() {
         getline(stream, ignore);  // ignoring timestamp
 
         Movie movieObj(title, year, genres, rating);
-        
+
     }
 
     return 0;
