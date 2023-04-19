@@ -5,8 +5,6 @@ private:
     vector<Movie> movies;
 
 public:
-    void addMovie(Movie movieObj);
-
     int getSize();
 
     void quickSort(int low, int high);
@@ -14,6 +12,10 @@ public:
     int partition(int low, int high);
 
     void printMovies();  // just for testing rn, only prints title and rating
+
+    void shellSort(int size);
+
+    void addMovies();
 
 };
 

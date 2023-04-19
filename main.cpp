@@ -38,61 +38,8 @@ int main() {
     }
 
     MoviesList allMovies; // from testing quickSort
+    allMovies.addMovies();
 
-    ifstream inFile;
-    inFile.open("movielens.csv");
-
-    if (!inFile.is_open()) {
-        cout << "Failed to open file." << endl;
-        return 1;
-    }
-    string ignore;
-
-    getline(inFile, ignore);  //  first line with col titles
-
-    string lineFromFile;
-
-    while(getline(inFile, lineFromFile)){
-        stringstream stream(lineFromFile);
-
-        string ignore;
-        getline(stream, ignore, ',');  // ignoring #
-        getline(stream, ignore, ','); // ignoring movieID
-
-        getline(stream, ignore, '"'); // chopping off " before title
-        string title;
-        getline(stream, title, '"');  //  read up until " then chop off comma
-        getline(stream, ignore, ',');
-
-        string yearTemp;
-        getline(stream, yearTemp, ',');
-        int year = stoi(yearTemp);
-
-        getline(stream, ignore, '"'); // chopping off " at start of genres
-        string allGenres;
-        getline(stream, allGenres, '"'); // chopping off " at end of genres
-
-        stringstream genreStream(allGenres);
-        vector<string> genres;
-        string genre1;
-        while (getline(genreStream, genre1, '|')){  //  getting each genre seperated by '|'
-            genres.push_back(genre1);
-        }
-
-
-        getline(stream, ignore, ',');
-        getline(stream, ignore, ','); // ignoring userID
-
-        string ratingTemp;
-        getline(stream, ratingTemp, ',');
-        double rating = stod(ratingTemp);
-
-        getline(stream, ignore);  // ignoring timestamp
-
-        Movie movieObj(title, year, genres, rating);
-        allMovies.addMovie(movieObj);
-
-    }
 
       /*   allMovies.quickSort(0,allMovies.getSize()-1); FROM TESTING
          allMovies.printMovies();*/
