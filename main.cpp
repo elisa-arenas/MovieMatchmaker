@@ -16,7 +16,7 @@ int main() {
     rectangle.setOutlineColor(sf::Color::White); // set outline color to blue
     rectangle.setOutlineThickness(2); // set outline thickness to 2 pixels
 
-
+    sf::CircleShape circle(100.f);
 
 
     while(window.isOpen()){
@@ -29,6 +29,7 @@ int main() {
 
         window.clear();
         window.draw(rectangle);
+        window.draw(circle);
         window.display();
     }
 
