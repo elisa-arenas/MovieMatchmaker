@@ -2,13 +2,9 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include "Movie.h"
+#include "MoviesList.h"
 using namespace std;
 
-/*NOTES: CURRENTLY AN ISSUE AT LINE 11738, SAYING INVALID ARGUMENT FOR STOD
- * REASON: TITLE AT LINE 11739 DOESN'T HAVE "" AROUND IT, BUT ITS BECAUSE THE USER GAVE NO ANSWER FOR TITLE, AND THE INPUT IS NA.
- * SHOULD WE JUST DELETE THESE LINES FROM THE CSV LOL THIS IS WEIRD TO DEAL WITH. I THINK ITS JUST 7 LINES.
- * IM CHILL WITH THAT IF YALL ARE. I THINK THE PARSING WILL BE GOOD AFTER WE DEAL WITH THAT!*/
 
 int main() {
     cout << "Welcome to the Movie Matchmaker!" << endl;
@@ -41,6 +37,8 @@ int main() {
         }
     }
 
+    MoviesList allMovies; // from testing quickSort
+
     ifstream inFile;
     inFile.open("movielens.csv");
 
@@ -54,7 +52,7 @@ int main() {
 
     string lineFromFile;
 
-     while(getline(inFile, lineFromFile)){
+    while(getline(inFile, lineFromFile)){
         stringstream stream(lineFromFile);
 
         string ignore;
@@ -92,14 +90,12 @@ int main() {
         getline(stream, ignore);  // ignoring timestamp
 
         Movie movieObj(title, year, genres, rating);
-
-      /*  cout << movieObj.title << " " << movieObj.year <<" ";
-        for (int i = 0; i < movieObj.genres.size(); i++){
-            cout << movieObj.genres[i] << " ";
-        }
-        cout << rating << endl;*/
+        allMovies.addMovie(movieObj);
 
     }
+
+      /*   allMovies.quickSort(0,allMovies.getSize()-1); FROM TESTING
+         allMovies.printMovies();*/
 
     return 0;
 }
