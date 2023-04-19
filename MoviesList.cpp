@@ -52,21 +52,20 @@ void MoviesList::printMovies() {
 }
 
 void MoviesList::shellSort(int size) {
+    // pulled from aman's lecture 6, slide 74
     int gap = size / 2;
 
     while (gap > 0){
-
         for (int i = gap; i < size; i++){
-            int key = movies[i].rating;
 
-            for (int j = i; j < size; j++){
-                
+            int key = movies[gap].rating;
+
+            int j;
+            for (j = i; j >= gap && movies[j - gap].rating > key; j--) {
+                movies[j].rating = movies[j - gap].rating;
             }
-
-
+            movies[j].rating = key;
         }
-
-
 
         gap = gap / 2;
     }
