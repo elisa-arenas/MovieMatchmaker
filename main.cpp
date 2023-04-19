@@ -3,10 +3,35 @@
 #include <fstream>
 #include <sstream>
 #include "MoviesList.h"
+#include "Interface.h"
 using namespace std;
 
 
 int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 800), "The Movie Matchmaker!");
+    sf::RectangleShape rectangle;
+    rectangle.setSize(sf::Vector2f(300, 200));
+    rectangle.setPosition(sf::Vector2f(220, 50)); // set position to (200, 200)
+    rectangle.setFillColor(sf::Color::Green); // set fill color to red
+    rectangle.setOutlineColor(sf::Color::White); // set outline color to blue
+    rectangle.setOutlineThickness(2); // set outline thickness to 2 pixels
+
+
+
+
+    while(window.isOpen()){
+        sf::Event event;
+        while(window.pollEvent(event)){
+            if(event.type == sf::Event::Closed)
+                window.close();
+        }
+
+
+        window.clear();
+        window.draw(rectangle);
+        window.display();
+    }
+
     cout << "Welcome to the Movie Matchmaker!" << endl;
     cout << "--------------------------------" << endl;
     cout << "Here We Will Return a Sorted Selection of Movie Recommendations!" << endl;
@@ -35,8 +60,7 @@ int main() {
         if (sortInput == "Shell" || sortInput == "shell") {
             cout << "Beginning Shell Sort by Genre...." << endl;
             // shell sort
-            allMovies.shellSort(allMovies.getSize());
-            allMovies.printMovies();
+
         } else if (sortInput == "Quick" || sortInput == "quick") {
             cout << "Beginning Quick Sort by Genre...." << endl;
             // quick sort
@@ -44,31 +68,7 @@ int main() {
             allMovies.printMovies();
         }
     }
-
+    allMovies.shellSort(allMovies.getSize());
+    allMovies.printMovies();
     return 0;
 }
-
-//
-//#include <SFML/Graphics.hpp>
-//
-//
-//int main(){
-//    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-//    sf::CircleShape shape(100.f);
-//    shape.setFillColor(sf::Color::Green);
-//
-//
-//    while(window.isOpen()){
-//        sf::Event event;
-//        while(window.pollEvent(event)){
-//            if(event.type == sf::Event::Closed)
-//                window.close();
-//        }
-//
-//
-//        window.clear();
-//        window.draw(shape);
-//        window.display();
-//    }
-//    return 0;
-//}
