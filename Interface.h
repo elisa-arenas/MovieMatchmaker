@@ -13,13 +13,8 @@ using namespace std;
 class Interface{
     sf::RenderWindow window;
 public:
-    //constructor creates new window
-    Interface(sf::RenderWindow window);
-
-
-    //maybe use this to customize window
-    void initializeWindow(sf::RenderWindow& window);
-
+    //create and initialize window
+    sf::RenderWindow createWindow();
 
     //to start over/reset input
     void resetWindow(sf::RenderWindow& window);

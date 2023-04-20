@@ -5,33 +5,10 @@
 #include "MoviesList.h"
 #include "Interface.h"
 using namespace std;
-
+sf::RenderWindow* createWindow();
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "The Movie Matchmaker!");
-    sf::RectangleShape rectangle;
-    rectangle.setSize(sf::Vector2f(300, 200));
-    rectangle.setPosition(sf::Vector2f(220, 50)); // set position to (200, 200)
-    rectangle.setFillColor(sf::Color::Green); // set fill color to red
-    rectangle.setOutlineColor(sf::Color::White); // set outline color to blue
-    rectangle.setOutlineThickness(2); // set outline thickness to 2 pixels
-
-    sf::CircleShape circle(100.f);
-
-
-    while(window.isOpen()){
-        sf::Event event;
-        while(window.pollEvent(event)){
-            if(event.type == sf::Event::Closed)
-                window.close();
-        }
-
-
-        window.clear();
-        window.draw(rectangle);
-        window.draw(circle);
-        window.display();
-    }
+    sf::RenderWindow* window = createWindow();
 
     cout << "Welcome to the Movie Matchmaker!" << endl;
     cout << "--------------------------------" << endl;
