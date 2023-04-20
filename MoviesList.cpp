@@ -83,7 +83,6 @@ void MoviesList::addMovies() {
 
     string lineFromFile;
 
-    for (int i; i < 30;) {
         while (getline(inFile, lineFromFile)) {
             stringstream stream(lineFromFile);
 
@@ -122,11 +121,31 @@ void MoviesList::addMovies() {
             getline(stream, ignore);  // ignoring timestamp
 
             Movie movieObj(title, year, genres, rating);
-            movies.push_back(movieObj);
 
-            i++;
-        }
+            bool duplicate = false;
+
+            for (int i = 0; i < movies.size(); i ++){
+                if (movies[i].title == movieObj.title){
+                    movies[i].count++;
+                    movies[i].rating += movieObj.rating;
+                    duplicate = true;
+                    break;
+                }
+
+            }
+            if (!duplicate){
+                movies.push_back(movieObj);
+            }
+
+
+
     }
+
+    // setting correct rating averages
+    for (int i = 0; i < movies.size(); i ++){
+        movies[i].rating = (movies[i].rating / movies[i].count);
+        }
+
 
 }
 

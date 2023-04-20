@@ -9,6 +9,7 @@ public:  //  currently public for sake of testing
     int year;
     vector<string> genres;
     double rating;
+    int count;
 
 
 

@@ -5,6 +5,7 @@ Movie::Movie(string &_title, int &_year, vector<string> &_genres, double &_ratin
     year = _year;
     genres = _genres;
     rating = _rating;
+    count = 1;
 
 }
 
