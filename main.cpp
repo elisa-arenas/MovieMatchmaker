@@ -1,51 +1,50 @@
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <sstream>
 #include "MoviesList.h"
 #include "Interface.h"
 using namespace std;
-sf::RenderWindow* createWindow();
 
 int main() {
-    sf::RenderWindow* window = createWindow();
-    cout << "Welcome to the Movie Matchmaker!" << endl;
-    cout << "--------------------------------" << endl;
-    cout << "Here We Will Return a Sorted Selection of Movie Recommendations!" << endl;
-    cout << "Please Choose a Sorting Category: Year or Genre" << endl;
+    Interface interface;
+    string input = interface.createWindow();
+    cout << input << endl;  // category algorithm
+    string typeInput = input.substr(0, input.find(" "));
+    string sortInput = input.substr(typeInput.size()+1);
 
-    string typeInput;
-    string sortInput;
-    cin >> typeInput;
     MoviesList allMovies; // from testing quickSort
     allMovies.addMovies();
 
-    // YEAR
-    if (typeInput == "Year" || typeInput == "year") {
-        cout << "Please Choose a Sorting Algorithm: Shell Sort or Quick Sort" << endl;
-        cin >> sortInput;
-        if (sortInput == "Shell" || sortInput == "shell") {
-            cout << "Beginning Shell Sort by Year...." << endl;
-        } else if (sortInput == "Quick" || sortInput == "quick") {
-            cout << "Beginning Quick Sort by Year...." << endl;
-        }
+    if(typeInput == "year" && sortInput == "shell"){
+        cout << "Beginning Shell Sort by Year...." << endl;
+        //shell sort
+        allMovies.shellSort(allMovies.getSize());
+        //display results in new window
+        interface.resultsWindow(typeInput, sortInput);
+        allMovies.printMovies();
     }
-        // GENRE
-    else if (typeInput == "Genre" || typeInput == "genre") {
-        cout << "Please Choose a Sorting Algorithm: Shell Sort or Quick Sort" << endl;
-        cin >> sortInput;
-        if (sortInput == "Shell" || sortInput == "shell") {
-            cout << "Beginning Shell Sort by Genre...." << endl;
-            // shell sort
-
-        } else if (sortInput == "Quick" || sortInput == "quick") {
-            cout << "Beginning Quick Sort by Genre...." << endl;
-            // quick sort
-            allMovies.quickSort(0,allMovies.getSize()-1);
-            allMovies.printMovies();
-        }
+    else if(typeInput == "year" && sortInput == "quick"){
+        cout << "Beginning Quick Sort by Year...." << endl;
+        //quick sort
+        allMovies.quickSort(0,allMovies.getSize()-1);
+        //display results in new window
+        interface.resultsWindow(typeInput, sortInput);
+        allMovies.printMovies();
     }
-    allMovies.shellSort(allMovies.getSize());
-    allMovies.printMovies();
+    else if(typeInput == "genre" && sortInput == "shell"){
+        cout << "Beginning Shell Sort by Genre...." << endl;
+        //shell sort
+        allMovies.shellSort(allMovies.getSize());
+        //display results in new window
+        interface.resultsWindow(typeInput, sortInput);
+        allMovies.printMovies();
+    }
+    else if(typeInput == "genre" && sortInput == "quick"){
+        cout << "Beginning Quick Sort by Genre...." << endl;
+        //quick sort
+        allMovies.quickSort(0,allMovies.getSize()-1);
+        //display results in new window
+        interface.resultsWindow(typeInput, sortInput);
+        allMovies.printMovies();
+    }
     return 0;
 }

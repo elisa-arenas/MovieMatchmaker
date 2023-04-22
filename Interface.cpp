@@ -1,4 +1,10 @@
 #include "Interface.h"
+#include "MoviesList.h"
+
+Interface Interface::interface() {
+    this->category = "";
+    this->algorithm = "";
+}
 
 void Interface::setCategory(string category) {
     this->category = category;
@@ -8,7 +14,8 @@ void Interface::setAlgorithm(string algorithm) {
     this->algorithm = algorithm;
 }
 
-sf::RenderWindow* createWindow(){
+//sf::RenderWindow*
+string Interface::createWindow() {
     Interface interface;
     sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
 
@@ -95,6 +102,20 @@ sf::RenderWindow* createWindow(){
     bool sort = false;
     bool first = true;
 
+    // draw the close button
+    sf::RectangleShape closeButton;
+    closeButton.setSize(sf::Vector2f(200, 100));
+    closeButton.setPosition(sf::Vector2f(window.getSize().x/2.5 , window.getSize().y - 110));
+    closeButton.setFillColor(sf::Color::White);
+
+    //create close button text
+    sf::Text closeText("continue...", font);
+    closeText.setCharacterSize(30);
+    closeText.setFillColor(sf::Color::Black);
+    closeText.setPosition(closeButton.getPosition().x + box1.getSize().x/2 - closeText.getLocalBounds().width/2,
+                          closeButton.getPosition().y + box1.getSize().y/2 - closeText.getLocalBounds().height/2);
+
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -112,8 +133,10 @@ sf::RenderWindow* createWindow(){
             }
             if (event.type == sf::Event::MouseButtonPressed && genreSelected) {
                 //save genre in a variable
-                interface.setCategory("genre");
-                cout << "genre selected" << endl;
+                if(interface.category == "") {
+                    interface.setCategory("genre");
+                    cout << "genre selected" << endl;
+                }
                 selection.setString("Please Choose a Sorting Algorithm");
                 genreText.setString("");
                 yearText.setString("");
@@ -123,9 +146,10 @@ sf::RenderWindow* createWindow(){
             }
             else if (event.type == sf::Event::MouseButtonPressed && yearSelected) {
                 //save year in a variable
-                interface.setCategory("year");
-                cout << "year selected" << endl;
-                //toggle button and redirect to new screen
+                if(interface.category == ""){
+                    interface.setCategory("year");
+                    cout << "year selected" << endl;
+                }
                 selection.setString("Please Choose a Sorting Algorithm");
                 genreText.setString("");
                 yearText.setString("");
@@ -145,6 +169,10 @@ sf::RenderWindow* createWindow(){
                     cout << "quick sort selected " << endl;
                 }
             }
+            if (closeButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                window.close();
+            }
+
 
         }
 
@@ -158,6 +186,8 @@ sf::RenderWindow* createWindow(){
         window.draw(box2);
         window.draw(yearText);
         window.draw(sprite);
+        window.draw(closeButton);
+        window.draw(closeText);
         if(sort){
             window.draw(shellText);
             window.draw(quickText);
@@ -165,8 +195,31 @@ sf::RenderWindow* createWindow(){
         }
         window.display();
     }
+    return interface.category + " " + interface.algorithm;
+}
 
-    return 0;
+void Interface::resultsWindow(string category, string algorithm){
+    sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
+
+    //create title
+    sf::Font font;
+    font.loadFromFile("../short-baby-font/ShortBaby-Mg2w.ttf");
+    sf::Text title("Your sorted movies", font);  //TODO: change title
+    title.setStyle(sf::Text::Bold);
+    title.setCharacterSize(50);
+    title.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 50);
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        sf::Color background(0, 0, 63);
+        window.clear(background);
+        window.draw(title);
+        window.display();
+    }
 }
 
 void Interface::resetWindow(sf::RenderWindow &window) {
