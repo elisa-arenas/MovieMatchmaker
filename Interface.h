@@ -11,10 +11,19 @@ using namespace std;
 
 
 class Interface{
+    string category;
+    string algorithm;
     sf::RenderWindow window;
 public:
-    //create and initialize window
+    Interface interface();
     sf::RenderWindow createWindow();
+    void setCategory(string category);
+    void setAlgorithm(string algorithm);
+    string getCategory();
+    string getAlgorithm();
+
+    //window that loads all results
+
 
     //to start over/reset input
     void resetWindow(sf::RenderWindow& window);

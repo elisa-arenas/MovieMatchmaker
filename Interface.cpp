@@ -1,7 +1,15 @@
 #include "Interface.h"
 
+void Interface::setCategory(string category) {
+    this->category = category;
+}
+
+void Interface::setAlgorithm(string algorithm) {
+    this->algorithm = algorithm;
+}
 
 sf::RenderWindow* createWindow(){
+    Interface interface;
     sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
 
     //save image as a sprite and size correctly
@@ -27,50 +35,65 @@ sf::RenderWindow* createWindow(){
     title.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 50);
 
     //create button for genre input
-    sf::RectangleShape genre;
-    genre.setSize(sf::Vector2f(200, 100));
-    genre.setPosition(sf::Vector2f((window.getSize().x / 2) - 360, (window.getSize().y / 2) + 90));
-    genre.setFillColor(sf::Color::White);
-    genre.setOutlineColor(sf::Color::White);
-    genre.setOutlineThickness(2);
+    sf::RectangleShape box1;
+    box1.setSize(sf::Vector2f(200, 100));
+    box1.setPosition(sf::Vector2f((window.getSize().x / 2) - 360, (window.getSize().y / 2) + 90));
+    box1.setFillColor(sf::Color::White);
+    box1.setOutlineColor(sf::Color::White);
+    box1.setOutlineThickness(2);
 
     // Create genre button text
     sf::Text genreText("Genre", font);
     genreText.setCharacterSize(30);
     genreText.setFillColor(sf::Color::Black);
-    genreText.setPosition(genre.getPosition().x + genre.getSize().x/2 - genreText.getLocalBounds().width/2,
-                          genre.getPosition().y + genre.getSize().y/2 - genreText.getLocalBounds().height/2);
+    genreText.setPosition(box1.getPosition().x + box1.getSize().x/2 - genreText.getLocalBounds().width/2,
+                          box1.getPosition().y + box1.getSize().y/2 - genreText.getLocalBounds().height/2);
 
     bool genreSelected = false; // flag to check if genre button has been clicked
-    std::string genreInput = ""; // variable to store user input for genre
 
 
     //create button for year input
-    sf::RectangleShape year;
-    year.setSize(sf::Vector2f(200, 100));
-    year.setPosition(sf::Vector2f((window.getSize().x / 2) + 150, (window.getSize().y / 2) + 90));
-    year.setFillColor(sf::Color::White);
-    year.setOutlineColor(sf::Color::White);
-    year.setOutlineThickness(2);
+    sf::RectangleShape box2;
+    box2.setSize(sf::Vector2f(200, 100));
+    box2.setPosition(sf::Vector2f((window.getSize().x / 2) + 150, (window.getSize().y / 2) + 90));
+    box2.setFillColor(sf::Color::White);
+    box2.setOutlineColor(sf::Color::White);
+    box2.setOutlineThickness(2);
 
     // Create year button text
     sf::Text yearText("Year", font);
     yearText.setCharacterSize(30);
     yearText.setFillColor(sf::Color::Black);
-    yearText.setPosition(year.getPosition().x + year.getSize().x/2 - yearText.getLocalBounds().width/2,
-                          year.getPosition().y + year.getSize().y/2 - yearText.getLocalBounds().height/2);
+    yearText.setPosition(box2.getPosition().x + box2.getSize().x/2 - yearText.getLocalBounds().width/2,
+                         box2.getPosition().y + box2.getSize().y/2 - yearText.getLocalBounds().height/2);
 
     bool yearSelected = false; // flag to check if genre button has been clicked
-    std::string yearInput = ""; // variable to store user input for genre
 
 
     //create instruction text
     sf::Text instructions("Here We Will Return a Sorted Selection of Movie Recommendations", font);
     instructions.setCharacterSize(20);
     instructions.setPosition((window.getSize().x / 2)/3.5, (window.getSize().y / 2)-20);
-    sf::Text selection("Please Choose a Sorting Category: Year or Genre", font);
+    sf::Text selection("Please Choose a Sorting Category", font);
     selection.setCharacterSize(20);
-    selection.setPosition((window.getSize().x / 2)/2, (window.getSize().y/2)+30);
+    selection.setPosition((window.getSize().x / 2)/1.5, (window.getSize().y/2)+30);
+
+    bool shellSelected = false;
+    sf::Text shellText("Shell Sort", font);
+    shellText.setCharacterSize(30);
+    shellText.setFillColor(sf::Color::Black);
+    shellText.setPosition(box1.getPosition().x + box1.getSize().x/2 - shellText.getLocalBounds().width/2,
+                          box1.getPosition().y + box1.getSize().y/2 - shellText.getLocalBounds().height/2);
+
+    bool quickSelected = false;
+    sf::Text quickText("Quick Sort", font);
+    quickText.setCharacterSize(30);
+    quickText.setFillColor(sf::Color::Black);
+    quickText.setPosition(box2.getPosition().x + box2.getSize().x/2 - quickText.getLocalBounds().width/2,
+                          box2.getPosition().y + box2.getSize().y/2 - quickText.getLocalBounds().height/2);
+
+    bool sort = false;
+    bool first = true;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -79,30 +102,50 @@ sf::RenderWindow* createWindow(){
                 window.close();
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    if (genre.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    if (box1.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                         genreSelected = true;
                     }
-                    else if (year.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    else if (box2.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                         yearSelected = true;
                     }
                 }
             }
-            if (event.type == sf::Event::TextEntered && genreSelected) {
-                if (event.text.unicode == '\b' && genreInput.size() > 0) {
-                    genreInput.pop_back(); // handle backspace
-                } else if (event.text.unicode < 128 && event.text.unicode != '\r') {
-                    genreInput += static_cast<char>(event.text.unicode); // handle input
-                }
-                genreText.setString(genreInput);
+            if (event.type == sf::Event::MouseButtonPressed && genreSelected) {
+                //save genre in a variable
+                interface.setCategory("genre");
+                cout << "genre selected" << endl;
+                selection.setString("Please Choose a Sorting Algorithm");
+                genreText.setString("");
+                yearText.setString("");
+                genreSelected = false; // reset genreSelected flag
+                yearSelected = false; // reset yearSelected flag
+                sort = true;
             }
-            if (event.type == sf::Event::TextEntered && yearSelected) {
-                if (event.text.unicode == '\b' && yearInput.size() > 0) {
-                    yearInput.pop_back(); // handle backspace
-                } else if (event.text.unicode < 128 && event.text.unicode != '\r') {
-                    yearInput += static_cast<char>(event.text.unicode); // handle input
-                }
-                yearText.setString(yearInput); // update the text displayed on the year button
+            else if (event.type == sf::Event::MouseButtonPressed && yearSelected) {
+                //save year in a variable
+                interface.setCategory("year");
+                cout << "year selected" << endl;
+                //toggle button and redirect to new screen
+                selection.setString("Please Choose a Sorting Algorithm");
+                genreText.setString("");
+                yearText.setString("");
+                genreSelected = false; // reset genreSelected flag
+                yearSelected = false; // reset yearSelected flag
+                sort = true;
             }
+            if(event.type == sf::Event::MouseButtonPressed && sort && !first){
+                if (box1.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    shellSelected = true;
+                    interface.setAlgorithm("shell");
+                    cout << "shell sort selected " << endl;
+                }
+                else if (box2.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    quickSelected = true;
+                    interface.setAlgorithm("quick");
+                    cout << "quick sort selected " << endl;
+                }
+            }
+
         }
 
         sf::Color background(0, 0, 63);
@@ -110,17 +153,21 @@ sf::RenderWindow* createWindow(){
         window.draw(title);
         window.draw(instructions);
         window.draw(selection);
-        window.draw(genre);
+        window.draw(box1);
         window.draw(genreText);
-        window.draw(year);
+        window.draw(box2);
         window.draw(yearText);
         window.draw(sprite);
+        if(sort){
+            window.draw(shellText);
+            window.draw(quickText);
+            first = false;
+        }
         window.display();
     }
 
     return 0;
 }
-
 
 void Interface::resetWindow(sf::RenderWindow &window) {
 }

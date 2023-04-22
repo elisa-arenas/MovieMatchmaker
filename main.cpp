@@ -9,7 +9,6 @@ sf::RenderWindow* createWindow();
 
 int main() {
     sf::RenderWindow* window = createWindow();
-
     cout << "Welcome to the Movie Matchmaker!" << endl;
     cout << "--------------------------------" << endl;
     cout << "Here We Will Return a Sorted Selection of Movie Recommendations!" << endl;
