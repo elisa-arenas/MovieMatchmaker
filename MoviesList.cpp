@@ -18,21 +18,18 @@ int MoviesList::partition(int low, int high) {
     double pivot = movies[low].rating; //  code from prof aman's slides on sorting, slide 122
     int up = low, down = high;
 
-    while(up < down)
-    {
-        for (int j = up; j < high; j++)
-        {
-            if(movies[up].rating > pivot)
+    while (up < down) {
+        for (int j = up; j < high; j++) {
+            if (movies[up].rating > pivot)
                 break;
             up++;
         }
-        for (int j = high; j > low; j--)
-        {
-            if(movies[down].rating < pivot)
+        for (int j = high; j > low; j--) {
+            if (movies[down].rating < pivot)
                 break;
             down--;
         }
-        if(up < down)
+        if (up < down)
             swap(movies[up], movies[down]);
     }
     swap(movies[low], movies[down]);
@@ -45,7 +42,7 @@ int MoviesList::getSize() {
 }
 
 void MoviesList::printMovies() {
-    for (int i = 0; i < movies.size(); i++){
+    for (int i = 0; i < movies.size(); i++) {
         cout << movies[i].title << " " << movies[i].rating << endl;
     }
 
@@ -73,7 +70,8 @@ void MoviesList::shellSort(int size) {
     }
 }
 
-void MoviesList::addMovies(const string &userGenre, const string &userYear) { //const string &userGenre, const string &userYear
+void MoviesList::addMovies(const string &userGenre,
+                           const string &userYear) { //const string &userGenre, const string &userYear
     ifstream inFile;
     inFile.open("movielens.csv");
 
@@ -83,86 +81,79 @@ void MoviesList::addMovies(const string &userGenre, const string &userYear) { //
 
     string lineFromFile;
 
-        while (getline(inFile, lineFromFile)) {
-            stringstream stream(lineFromFile);
+    while (getline(inFile, lineFromFile)) {
+        stringstream stream(lineFromFile);
 
-            string ignore;
-            getline(stream, ignore, ',');  // ignoring #
-            getline(stream, ignore, ','); // ignoring movieID
+        string ignore;
+        getline(stream, ignore, ',');  // ignoring #
+        getline(stream, ignore, ','); // ignoring movieID
 
-            getline(stream, ignore, '"'); // chopping off " before title
-            string title;
-            getline(stream, title, '"');  //  read up until " then chop off comma
-            getline(stream, ignore, ',');
+        getline(stream, ignore, '"'); // chopping off " before title
+        string title;
+        getline(stream, title, '"');  //  read up until " then chop off comma
+        getline(stream, ignore, ',');
 
-            string yearString;
-            getline(stream, yearString, ',');
-            int year = stoi(yearString);
+        string yearString;
+        getline(stream, yearString, ',');
+        int year = stoi(yearString);
 
-            getline(stream, ignore, '"'); // chopping off " at start of genres
-            string allGenres;
-            getline(stream, allGenres, '"'); // chopping off " at end of genres
+        getline(stream, ignore, '"'); // chopping off " at start of genres
+        string allGenres;
+        getline(stream, allGenres, '"'); // chopping off " at end of genres
 
-            stringstream genreStream(allGenres);
-            vector<string> genres;
-            string genre1;
-            while (getline(genreStream, genre1, '|')) {  //  getting each genre seperated by '|'
-                genres.push_back(genre1);
+        stringstream genreStream(allGenres);
+        unordered_set<string> genres;
+        string genre1;
+        while (getline(genreStream, genre1, '|')) {  //  getting each genre seperated by '|'
+            genres.insert(genre1);
+        }
+
+
+        getline(stream, ignore, ',');
+        getline(stream, ignore, ','); // ignoring userID
+
+        string ratingTemp;
+        getline(stream, ratingTemp, ',');
+        double rating = stod(ratingTemp);
+
+        getline(stream, ignore);  // ignoring timestamp
+
+        Movie movieObj(title, year, genres, rating);
+
+        bool duplicate = false;
+
+        for (int i = 0; i < movies.size(); i++) {
+            if (movies[i].title == movieObj.title) {
+                movies[i].count++;
+                movies[i].rating += movieObj.rating;
+                duplicate = true;
+                break;
             }
 
-
-            getline(stream, ignore, ',');
-            getline(stream, ignore, ','); // ignoring userID
-
-            string ratingTemp;
-            getline(stream, ratingTemp, ',');
-            double rating = stod(ratingTemp);
-
-            getline(stream, ignore);  // ignoring timestamp
-
-            Movie movieObj(title, year, genres, rating);
-
-            bool duplicate = false;
-
-            for (int i = 0; i < movies.size(); i ++){
-                if (movies[i].title == movieObj.title){
-                    movies[i].count++;
-                    movies[i].rating += movieObj.rating;
-                    duplicate = true;
-                    break;
-                }
-
-            }
-            if (!duplicate){
-                if (userGenre != ""){
-                    for (int i = 0; i < movieObj.genres.size(); i++){
-                        if (movieObj.genres[i] == userGenre){
-                            if (userYear == ""){
-                                movies.push_back(movieObj);  // if user wants rec based on genre
-                            }
-                            else if (yearString == userYear) {
-                                    movies.push_back(movieObj);  //  if user wants rec based on genre AND year
-                            }
-                        }
-                    }
-                }
-
-                // if user wants a recommendation based on year
-                else if (userYear != "" && userGenre == ""){
-                    if (yearString == userYear){
-                        movies.push_back(movieObj);
-                    }
+        }
+        if (!duplicate) {
+            if (genres.find(userGenre) != genres.end()) {
+                if (userYear == "") {
+                    movies.push_back(movieObj);  // if user wants rec based on genre
+                } else if (yearString == userYear) {
+                    movies.push_back(movieObj);  //  if user wants rec based on genre AND year
                 }
             }
 
+            // if user wants a recommendation based on year
+            else if (yearString == userYear) {
+                movies.push_back(movieObj);
+            }
+
+        }
 
 
     }
 
     // setting correct rating averages
-    for (int i = 0; i < movies.size(); i ++){
+    for (int i = 0; i < movies.size(); i++) {
         movies[i].rating = (movies[i].rating / movies[i].count);
-        }
+    }
 
 
 }

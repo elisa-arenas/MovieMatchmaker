@@ -1,6 +1,6 @@
 #include "Movie.h"
 
-Movie::Movie(string &_title, int &_year, vector<string> &_genres, double &_rating) {
+Movie::Movie(string &_title, int &_year, unordered_set<string> &_genres, double &_rating) {
     title = _title;
     year = _year;
     genres = _genres;
