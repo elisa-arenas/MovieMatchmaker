@@ -13,14 +13,17 @@ using namespace std;
 class Interface{
     string category;
     string algorithm;
+    string input;
     sf::RenderWindow window;
 public:
     Interface interface();
-    string createWindow(); //TODO: incorporate button that brings you to another window OR closes it
+    string createWindow();
     void setCategory(string category);
     void setAlgorithm(string algorithm);
+    void setInput(string input);
     string getCategory();
     string getAlgorithm();
+    string getInput();
 
     //window that loads all results
     void resultsWindow(string category, string algorithm);
