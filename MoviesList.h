@@ -15,7 +15,7 @@ public:
 
     void shellSort(int size);
 
-    void addMovies();
+    void addMovies(const string &userGenre, const string &userYear); //const string &userGenre, const string &userYear
 
 };
 

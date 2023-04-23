@@ -73,7 +73,7 @@ void MoviesList::shellSort(int size) {
     }
 }
 
-void MoviesList::addMovies() {
+void MoviesList::addMovies(const string &userGenre, const string &userYear) { //const string &userGenre, const string &userYear
     ifstream inFile;
     inFile.open("movielens.csv");
 
@@ -95,9 +95,9 @@ void MoviesList::addMovies() {
             getline(stream, title, '"');  //  read up until " then chop off comma
             getline(stream, ignore, ',');
 
-            string yearTemp;
-            getline(stream, yearTemp, ',');
-            int year = stoi(yearTemp);
+            string yearString;
+            getline(stream, yearString, ',');
+            int year = stoi(yearString);
 
             getline(stream, ignore, '"'); // chopping off " at start of genres
             string allGenres;
@@ -134,7 +134,25 @@ void MoviesList::addMovies() {
 
             }
             if (!duplicate){
-                movies.push_back(movieObj);
+                if (userGenre != ""){
+                    for (int i = 0; i < movieObj.genres.size(); i++){
+                        if (movieObj.genres[i] == userGenre){
+                            if (userYear == ""){
+                                movies.push_back(movieObj);  // if user wants rec based on genre
+                            }
+                            else if (yearString == userYear) {
+                                    movies.push_back(movieObj);  //  if user wants rec based on genre AND year
+                            }
+                        }
+                    }
+                }
+
+                // if user wants a recommendation based on year
+                else if (userYear != "" && userGenre == ""){
+                    if (yearString == userYear){
+                        movies.push_back(movieObj);
+                    }
+                }
             }
 
 
