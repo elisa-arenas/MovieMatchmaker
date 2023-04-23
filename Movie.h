@@ -5,7 +5,7 @@
 using namespace std;
 
 class Movie {
-public:  //  currently public for sake of testing
+public:
     string title;
     int year;
     unordered_set<string> genres;
@@ -15,9 +15,6 @@ public:  //  currently public for sake of testing
 
 
     Movie(string &_title, int &_year, unordered_set<string> &_genres, double &_rating);
-    string getTitle();
-
-
 };
 
 
