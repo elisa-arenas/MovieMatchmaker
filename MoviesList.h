@@ -11,11 +11,11 @@ public:
 
     int partition(int low, int high);
 
-    void printMovies();  // just for testing rn, only prints title and rating
+    void printMovies();  // just for testing rn
 
     void shellSort(int size);
 
-    void addMovies(const string &userGenre, const string &userYear); //const string &userGenre, const string &userYear
+    void addMovies(const string &userGenre, const string &userYear);
 
 };
 

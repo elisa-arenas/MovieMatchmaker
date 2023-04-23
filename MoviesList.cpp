@@ -41,9 +41,15 @@ int MoviesList::getSize() {
     return movies.size();
 }
 
-void MoviesList::printMovies() {
-    for (int i = 0; i < movies.size(); i++) {
-        cout << movies[i].title << " " << movies[i].rating << endl;
+void MoviesList::printMovies() {  // testing purposes
+    for (auto & movie : movies) {
+        cout << movie.title << " " << movie.year << " ";
+
+        auto genreIt = movie.genres.begin();
+        for (genreIt; genreIt != movie.genres.end(); genreIt++){
+            cout << *genreIt << " ";
+        }
+        cout << movie.rating << endl;
     }
 
 }
@@ -70,8 +76,7 @@ void MoviesList::shellSort(int size) {
     }
 }
 
-void MoviesList::addMovies(const string &userGenre,
-                           const string &userYear) { //const string &userGenre, const string &userYear
+void MoviesList::addMovies(const string &userGenre,const string &userYear) {
     ifstream inFile;
     inFile.open("movielens.csv");
 
@@ -84,7 +89,6 @@ void MoviesList::addMovies(const string &userGenre,
     while (getline(inFile, lineFromFile)) {
         stringstream stream(lineFromFile);
 
-        string ignore;
         getline(stream, ignore, ',');  // ignoring #
         getline(stream, ignore, ','); // ignoring movieID
 
@@ -108,7 +112,6 @@ void MoviesList::addMovies(const string &userGenre,
             genres.insert(genre1);
         }
 
-
         getline(stream, ignore, ',');
         getline(stream, ignore, ','); // ignoring userID
 
@@ -122,26 +125,27 @@ void MoviesList::addMovies(const string &userGenre,
 
         bool duplicate = false;
 
-        for (int i = 0; i < movies.size(); i++) {
-            if (movies[i].title == movieObj.title) {
-                movies[i].count++;
-                movies[i].rating += movieObj.rating;
+        for (auto & movie : movies) {
+            if (movie.title == movieObj.title) {
+                movie.count++;
+                movie.rating += movieObj.rating;
                 duplicate = true;
                 break;
             }
 
         }
-        if (!duplicate) {
-            if (genres.find(userGenre) != genres.end()) {
-                if (userYear == "") {
+        if (!duplicate) {  //  this could be simplified but it works
+            if (movieObj.genres.find(userGenre) != genres.end()) {
+                if (userYear.empty()) {
                     movies.push_back(movieObj);  // if user wants rec based on genre
-                } else if (yearString == userYear) {
+                }
+                else if (yearString == userYear) {
                     movies.push_back(movieObj);  //  if user wants rec based on genre AND year
                 }
             }
 
             // if user wants a recommendation based on year
-            else if (yearString == userYear) {
+            else if (yearString == userYear && userGenre.empty()) {
                 movies.push_back(movieObj);
             }
 
@@ -151,8 +155,8 @@ void MoviesList::addMovies(const string &userGenre,
     }
 
     // setting correct rating averages
-    for (int i = 0; i < movies.size(); i++) {
-        movies[i].rating = (movies[i].rating / movies[i].count);
+    for (auto & movie : movies) {
+        movie.rating = (movie.rating / movie.count);
     }
 
 

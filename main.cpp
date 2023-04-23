@@ -12,7 +12,10 @@ int main() {
     string sortInput = input.substr(typeInput.size()+1);
 
     MoviesList allMovies; // from testing quickSort
-    allMovies.addMovies();  // PASS IN GENRE, YEAR ("" for year if only sorting my genre and vice versa)
+    //TESTING
+   /* string genreTesting = "Drama";
+    string yearTesting = "1943";*/
+    allMovies.addMovies();  // PASS IN GENRE, YEAR ("" for year if only sorting by genre and vice versa)
 
     if(typeInput == "year" && sortInput == "shell"){
         cout << "Beginning Shell Sort by Year...." << endl;
