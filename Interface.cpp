@@ -1,5 +1,4 @@
 #include "Interface.h"
-#include "MoviesList.h"
 
 Interface Interface::interface() {
     this->category = "";
@@ -21,7 +20,7 @@ void Interface::setInput(string input) {
 
 
 //sf::RenderWindow*
-string Interface::createWindow() {
+void Interface::createWindow(MoviesList &Movies) {
     Interface interface;
     sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
 
@@ -166,6 +165,7 @@ string Interface::createWindow() {
 
                 }
                 if (event.type == sf::Event::MouseButtonPressed && continueSelected) {
+                    Movies.addMovies(genreInput, "");  // sara addition
                     interface.setInput(genreInput);
                     cout << "Genre: " << genreInput << endl;
                     //save genre in a variable
@@ -191,6 +191,7 @@ string Interface::createWindow() {
 
                 }
                 if (event.type == sf::Event::MouseButtonPressed && continueSelected) {
+                    Movies.addMovies("", yearInput); // sara addition
                     //save year in a variable
                     interface.setInput(yearInput);
                     cout << "Year: " << yearInput << endl;
@@ -210,12 +211,14 @@ string Interface::createWindow() {
 
             if(event.type == sf::Event::MouseButtonPressed && sort && !first){
                 if (box1.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    Movies.shellSort(Movies.getSize()); // sara addition
                     shellSelected = true;
                     interface.setAlgorithm("shell");
                     cout << "shell sort selected " << endl;
                     closeSelected = true;
                 }
                 else if (box2.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    Movies.quickSort(0, Movies.getSize() - 1); // sara addition
                     quickSelected = true;
                     interface.setAlgorithm("quick");
                     cout << "quick sort selected " << endl;
@@ -254,19 +257,41 @@ string Interface::createWindow() {
         }
         window.display();
     }
-    return interface.category + " " + interface.input + " " + interface.algorithm;
+    //return interface.category + " " + interface.input + " " + interface.algorithm;
 }
 
-void Interface::resultsWindow(string category, string algorithm){
+void Interface::resultsWindow(MoviesList &Movies){
     sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
 
     //create title
     sf::Font font;
     font.loadFromFile("../short-baby-font/ShortBaby-Mg2w.ttf");
-    sf::Text title("Your sorted movies", font);  //TODO: change title
+    sf::Text title("Top 5 Movies Based on Input:", font);
     title.setStyle(sf::Text::Bold);
     title.setCharacterSize(50);
     title.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 50);
+
+
+    sf::Text movie1(Movies.getMovieRecTitle(Movies.getSize() - 1) + " " + Movies.getMovieRecRating(Movies.getSize()-1), font);
+    movie1.setCharacterSize(30);
+    movie1.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 150);
+
+    sf::Text movie2(Movies.getMovieRecTitle(Movies.getSize() - 2) + " " + Movies.getMovieRecRating(Movies.getSize()-2), font);
+    movie2.setCharacterSize(30);
+    movie2.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 250);
+
+    sf::Text movie3(Movies.getMovieRecTitle(Movies.getSize() - 3) + " " + Movies.getMovieRecRating(Movies.getSize()-3), font);
+    movie3.setCharacterSize(30);
+    movie3.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 350);
+
+    sf::Text movie4(Movies.getMovieRecTitle(Movies.getSize() - 4) + " " + Movies.getMovieRecRating(Movies.getSize()-4), font);
+    movie4.setCharacterSize(30);
+    movie4.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 450);
+
+    sf::Text movie5(Movies.getMovieRecTitle(Movies.getSize() - 5) + " " + Movies.getMovieRecRating(Movies.getSize()-5), font);
+    movie5.setCharacterSize(30);
+    movie5.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 550);
+
 
     while (window.isOpen()) {
         sf::Event event;
@@ -277,6 +302,11 @@ void Interface::resultsWindow(string category, string algorithm){
         sf::Color background(0, 0, 63);
         window.clear(background);
         window.draw(title);
+        window.draw(movie1);
+        window.draw(movie2);
+        window.draw(movie3);
+        window.draw(movie4);
+        window.draw(movie5);
         window.display();
     }
 }

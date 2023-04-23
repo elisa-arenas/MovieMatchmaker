@@ -162,5 +162,14 @@ void MoviesList::addMovies(const string &userGenre,const string &userYear) {
 
 }
 
+string MoviesList::getMovieRecTitle(int index) {
+    return movies[index].title;
+}
+
+string MoviesList::getMovieRecRating(int index) {
+    return std::to_string(movies[index].rating);
+}
+
+
 
 

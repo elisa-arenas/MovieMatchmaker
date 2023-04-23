@@ -17,6 +17,12 @@ public:
 
     void addMovies(const string &userGenre, const string &userYear);
 
+    string getMovieRecTitle(int index);
+
+    string getMovieRecRating(int index);
+
+
+
 };
 
 

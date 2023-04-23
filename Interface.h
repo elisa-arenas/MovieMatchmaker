@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "MoviesList.h"
 #include <SFML/Graphics.hpp>
 using namespace std;
 
@@ -17,7 +18,7 @@ class Interface{
     sf::RenderWindow window;
 public:
     Interface interface();
-    string createWindow();
+    void createWindow(MoviesList &Movies);
     void setCategory(string category);
     void setAlgorithm(string algorithm);
     void setInput(string input);
@@ -26,7 +27,7 @@ public:
     string getInput();
 
     //window that loads all results
-    void resultsWindow(string category, string algorithm);
+    void resultsWindow(MoviesList &Movies);
 
     //to start over/reset input
     void resetWindow(sf::RenderWindow& window);
