@@ -167,7 +167,7 @@ string MoviesList::getMovieRecTitle(int index) {
 }
 
 string MoviesList::getMovieRecRating(int index) {
-    return std::to_string(movies[index].rating);
+    return std::to_string(movies[index].rating).substr(0, 4);
 }
 
 
