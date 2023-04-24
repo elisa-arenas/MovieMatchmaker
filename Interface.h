@@ -16,6 +16,7 @@ class Interface{
     string algorithm;
     string input;
     sf::RenderWindow window;
+    string duration;
 public:
     Interface interface();
     void createWindow(MoviesList &Movies);
@@ -30,5 +31,5 @@ public:
     void resultsWindow(MoviesList &Movies);
 
     //to start over/reset input
-    void resetWindow(sf::RenderWindow& window);
+    void resetWindow(MoviesList &Movies);
 };
