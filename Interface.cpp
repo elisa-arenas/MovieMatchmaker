@@ -213,12 +213,12 @@ void Interface::createWindow(MoviesList &Movies) {
             if(event.type == sf::Event::MouseButtonPressed && sort && !first){
                 if (box1.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                     auto start = std::chrono::high_resolution_clock::now(); // get current time
-                    Movies.shellSort(Movies.getSize()); // sara addition
+                    Movies.shellSort(Movies.getSize());
                     auto end = std::chrono::high_resolution_clock::now(); // get current time
-                    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start); // calculate the duration in microseconds
-                    cout << "Time taken by Shell Sort: " << duration.count() << " microseconds" << endl; // print the duration
-                    string dur = to_string(duration.count());
-                    interface.duration = dur;
+                    auto durationTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start); // calculate the duration in microseconds
+                    cout << "Time taken by Shell Sort: " << durationTime.count() << " microseconds" << endl; // print the duration
+                    string dur = to_string(durationTime.count());
+                    duration = dur;
                     shellSelected = true;
                     interface.setAlgorithm("shell");
                     cout << "shell sort selected " << endl;
@@ -245,6 +245,7 @@ void Interface::createWindow(MoviesList &Movies) {
 
         }
 
+
         sf::Color background(0, 0, 63);
         window.clear(background);
         window.draw(title);
@@ -270,7 +271,6 @@ void Interface::createWindow(MoviesList &Movies) {
         }
         window.display();
     }
-    //return interface.category + " " + interface.input + " " + interface.algorithm;
 }
 
 void Interface::resultsWindow(MoviesList &Movies){
