@@ -228,10 +228,10 @@ void Interface::createWindow(MoviesList &Movies) {
                     auto start = std::chrono::high_resolution_clock::now(); // get current time
                     Movies.quickSort(0, Movies.getSize() - 1);
                     auto end = std::chrono::high_resolution_clock::now(); // get current time
-                    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start); // calculate the duration in microseconds
-                    cout << "Time taken by Quick Sort: " << duration.count() << " microseconds" << endl; // print the duration
-                    string dur = to_string(duration.count());
-                    interface.duration = dur;
+                    auto durationTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start); // calculate the duration in microseconds
+                    cout << "Time taken by Quick Sort: " << durationTime.count() << " microseconds" << endl; // print the duration
+                    string dur = to_string(durationTime.count());
+                    duration = dur;
                     quickSelected = true;
                     interface.setAlgorithm("quick");
                     cout << "quick sort selected " << endl;
@@ -305,10 +305,9 @@ void Interface::resultsWindow(MoviesList &Movies){
     movie5.setCharacterSize(30);
     movie5.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 550);
 
-//TODO: show timer display on window
-//    sf::Text duration("Duration of Sort: " + interface().duration + " microseconds", font);
-//    duration.setCharacterSize(40);
-//    duration.setPosition((window.getSize().x / 2),100);  //fix position
+   sf::Text durationText("Duration of Sort: " + duration + " microseconds", font);
+    durationText.setCharacterSize(30);
+    durationText.setPosition((window.getSize().x / 7),100);  //fix position
 
     while (window.isOpen()) {
         sf::Event event;
@@ -324,7 +323,7 @@ void Interface::resultsWindow(MoviesList &Movies){
         window.draw(movie3);
         window.draw(movie4);
         window.draw(movie5);
-        //window.draw(duration);
+        window.draw(durationText);
         window.display();
     }
 }

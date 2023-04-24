@@ -4,6 +4,7 @@
 using namespace std;
 
 int main() {
+
     Interface interface;
     MoviesList allMovies; // from testing quickSort
     interface.createWindow(allMovies);
