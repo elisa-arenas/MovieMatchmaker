@@ -12,8 +12,6 @@ public:
     double rating;
     int count;
 
-
-
     Movie(string &_title, int &_year, unordered_set<string> &_genres, double &_rating);
 };
 

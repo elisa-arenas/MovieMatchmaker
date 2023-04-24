@@ -11,7 +11,7 @@ public:
 
     int partition(int low, int high);
 
-    void printMovies();  // just for testing rn
+    void printMovies();  // used for testing
 
     void shellSort(int size);
 

@@ -1,4 +1,3 @@
-
 #include "MoviesList.h"
 #include <fstream>
 #include <sstream>
@@ -10,8 +9,6 @@ void MoviesList::quickSort(int low, int high) {// sorting by rating. assuming li
         quickSort(low, pivot - 1);
         quickSort(pivot + 1, high);
     }
-
-
 }
 
 int MoviesList::partition(int low, int high) {
@@ -148,9 +145,7 @@ void MoviesList::addMovies(const string &userGenre,const string &userYear) {
             else if (yearString == userYear && userGenre.empty()) {
                 movies.push_back(movieObj);
             }
-
         }
-
 
     }
 
@@ -158,7 +153,6 @@ void MoviesList::addMovies(const string &userGenre,const string &userYear) {
     for (auto & movie : movies) {
         movie.rating = (movie.rating / movie.count);
     }
-
 
 }
 

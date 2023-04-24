@@ -19,8 +19,6 @@ void Interface::setInput(string input) {
     this->input = input;
 }
 
-
-//sf::RenderWindow*
 void Interface::createWindow(MoviesList &Movies) {
     Interface interface;
     sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
