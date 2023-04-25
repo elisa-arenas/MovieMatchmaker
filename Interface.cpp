@@ -1,24 +1,6 @@
 #include "Interface.h"
 #include <chrono>
 
-Interface Interface::interface() {
-    this->category = "";
-    this->algorithm = "";
-    this->input = "";
-}
-
-void Interface::setCategory(string category) {
-    this->category = category;
-}
-
-void Interface::setAlgorithm(string algorithm) {
-    this->algorithm = algorithm;
-}
-
-void Interface::setInput(string input) {
-    this->input = input;
-}
-
 void Interface::createWindow(MoviesList &Movies) {
     Interface interface;
     sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
@@ -30,11 +12,10 @@ void Interface::createWindow(MoviesList &Movies) {
     sprite.setTexture(texture);
     sf::Vector2u windowSize = window.getSize();
     sf::Vector2u textureSize = texture.getSize();
-    // Calculate the scale factor to fit the smaller dimension of the window
+    //calculate scale factor to fit window size
     float scaleFactor = std::min((float)windowSize.x / textureSize.x, (float)windowSize.y / textureSize.y);
-    // Set the scale of the sprite
+    //scale sprite to fit entire image in window
     sprite.setScale(scaleFactor, scaleFactor);
-    // Center the sprite in the window
     sprite.setPosition((windowSize.x - textureSize.x * scaleFactor) / 2, 120);
 
     //create title
@@ -61,7 +42,7 @@ void Interface::createWindow(MoviesList &Movies) {
                           box1.getPosition().y + box1.getSize().y/2 - genreText.getLocalBounds().height/2);
 
     bool genreSelected = false; // flag to check if genre button has been clicked
-    std::string genreInput = ""; // variable to store user input for genre
+    string genreInput = ""; // variable to store user input for genre
 
 
     //create button for year input
@@ -80,7 +61,7 @@ void Interface::createWindow(MoviesList &Movies) {
                          box2.getPosition().y + box2.getSize().y/2 - yearText.getLocalBounds().height/2);
 
     bool yearSelected = false; // flag to check if genre button has been clicked
-    std::string yearInput = ""; // variable to store user input for genre
+    string yearInput = ""; // variable to store user input for genre
 
 
     //create instruction text
@@ -91,6 +72,7 @@ void Interface::createWindow(MoviesList &Movies) {
     selection.setCharacterSize(20);
     selection.setPosition((window.getSize().x / 2)/1.5, (window.getSize().y/2)+30);
 
+    //create shellSort text
     bool shellSelected = false;
     sf::Text shellText("Shell Sort", font);
     shellText.setCharacterSize(30);
@@ -98,6 +80,7 @@ void Interface::createWindow(MoviesList &Movies) {
     shellText.setPosition(box1.getPosition().x + box1.getSize().x/2 - shellText.getLocalBounds().width/2,
                           box1.getPosition().y + box1.getSize().y/2 - shellText.getLocalBounds().height/2);
 
+    //create quickSort text
     bool quickSelected = false;
     sf::Text quickText("Quick Sort", font);
     quickText.setCharacterSize(30);
@@ -105,7 +88,9 @@ void Interface::createWindow(MoviesList &Movies) {
     quickText.setPosition(box2.getPosition().x + box2.getSize().x/2 - quickText.getLocalBounds().width/2,
                           box2.getPosition().y + box2.getSize().y/2 - quickText.getLocalBounds().height/2);
 
+    //sort represents if the movies have been sorted yet
     bool sort = false;
+    //first represents if the user is on the first or second input
     bool first = true;
 
     //draw continue button
@@ -135,7 +120,7 @@ void Interface::createWindow(MoviesList &Movies) {
     closeText.setFillColor(sf::Color::Black);
     closeText.setPosition(closeButton.getPosition().x + box1.getSize().x/2 - closeText.getLocalBounds().width/2,
                           closeButton.getPosition().y + box1.getSize().y/2 - closeText.getLocalBounds().height/2);
-    bool closeSelected = false;
+    bool closeSelected = false; //checks if close button was clicked
 
     while (window.isOpen()) {
         sf::Event event;
@@ -156,19 +141,16 @@ void Interface::createWindow(MoviesList &Movies) {
             if (genreSelected && first) {
                 if (event.type == sf::Event::TextEntered && genreSelected) {
                     if (event.text.unicode == '\b' && genreInput.size() > 0) {
-                        genreInput.pop_back(); // handle backspace
+                        genreInput.pop_back(); // handles backspace
                     } else if (event.text.unicode < 128 && event.text.unicode != '\r') {
-                        genreInput += static_cast<char>(event.text.unicode); // handle input
+                        genreInput += static_cast<char>(event.text.unicode); //takes in user input
                     }
                     genreText.setString(genreInput);
 
                 }
                 if (event.type == sf::Event::MouseButtonPressed && continueSelected) {
-                    Movies.addMovies(genreInput, "");  // sara addition
-                    interface.setInput(genreInput);
+                    Movies.addMovies(genreInput, "");
                     cout << "Genre: " << genreInput << endl;
-                    //save genre in a variable
-                    interface.setCategory("genre");
                     cout << "genre selected" << endl;
                     selection.setString("Please Choose a Sorting Algorithm");
                     genreText.setString("");
@@ -191,11 +173,8 @@ void Interface::createWindow(MoviesList &Movies) {
                 }
                 if (event.type == sf::Event::MouseButtonPressed && continueSelected) {
                     Movies.addMovies("", yearInput); // sara addition
-                    //save year in a variable
-                    interface.setInput(yearInput);
                     cout << "Year: " << yearInput << endl;
                     if (interface.category == "") {
-                        interface.setCategory("year");
                         cout << "year selected" << endl;
                     }
                     selection.setString("Please Choose a Sorting Algorithm");
@@ -207,31 +186,28 @@ void Interface::createWindow(MoviesList &Movies) {
                     first = false;
                 }
             }
-
             if(event.type == sf::Event::MouseButtonPressed && sort && !first){
                 if (box1.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
-                    auto start = std::chrono::high_resolution_clock::now(); // get current time
+                    auto start = chrono::high_resolution_clock::now(); // get current time
                     Movies.shellSort(Movies.getSize());
-                    auto end = std::chrono::high_resolution_clock::now(); // get current time
-                    auto durationTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start); // calculate the duration in microseconds
+                    auto end = chrono::high_resolution_clock::now(); // get current time
+                    auto durationTime = chrono::duration_cast<chrono::microseconds>(end - start); // calculate the duration in microseconds
                     cout << "Time taken by Shell Sort: " << durationTime.count() << " microseconds" << endl; // print the duration
                     string dur = to_string(durationTime.count());
                     duration = dur;
                     shellSelected = true;
-                    interface.setAlgorithm("shell");
                     cout << "shell sort selected " << endl;
                     closeSelected = true;
                 }
                 else if (box2.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
-                    auto start = std::chrono::high_resolution_clock::now(); // get current time
+                    auto start = chrono::high_resolution_clock::now(); // get current time
                     Movies.quickSort(0, Movies.getSize() - 1);
-                    auto end = std::chrono::high_resolution_clock::now(); // get current time
-                    auto durationTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start); // calculate the duration in microseconds
+                    auto end = chrono::high_resolution_clock::now(); // get current time
+                    auto durationTime = chrono::duration_cast<chrono::microseconds>(end - start); // calculate the duration in microseconds
                     cout << "Time taken by Quick Sort: " << durationTime.count() << " microseconds" << endl; // print the duration
                     string dur = to_string(durationTime.count());
                     duration = dur;
                     quickSelected = true;
-                    interface.setAlgorithm("quick");
                     cout << "quick sort selected " << endl;
                     closeSelected = true;
                 }
@@ -239,8 +215,6 @@ void Interface::createWindow(MoviesList &Movies) {
             if (closeButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y) && closeSelected) {
                 window.close();
             }
-
-
         }
 
 
@@ -274,38 +248,43 @@ void Interface::createWindow(MoviesList &Movies) {
 void Interface::resultsWindow(MoviesList &Movies){
     sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
 
-    //create title
+    //load fonts
     sf::Font font;
     font.loadFromFile("../short-baby-font/ShortBaby-Mg2w.ttf");
-    sf::Text title("Top 5 Movies Based on Input:", font);
+    sf::Font font2;
+    font2.loadFromFile("../hangar-nine-font/HangarNine-eW1e.ttf");
+
+    //create title
+    sf::Text title("Top 5 Movies Based on Input", font);
     title.setStyle(sf::Text::Bold);
     title.setCharacterSize(50);
     title.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 50);
 
+    sf::Text durationText("Duration of Sort: " + duration + " microseconds", font2);
+    //durationText.setStyle(sf::Text::Bold);
+    durationText.setCharacterSize(30);
+    durationText.setPosition((window.getSize().x / 4),120);
 
     sf::Text movie1(Movies.getMovieRecTitle(Movies.getSize() - 1) + " " + Movies.getMovieRecRating(Movies.getSize()-1), font);
     movie1.setCharacterSize(30);
-    movie1.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 150);
+    movie1.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 180);
 
     sf::Text movie2(Movies.getMovieRecTitle(Movies.getSize() - 2) + " " + Movies.getMovieRecRating(Movies.getSize()-2), font);
     movie2.setCharacterSize(30);
-    movie2.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 250);
+    movie2.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 280);
 
     sf::Text movie3(Movies.getMovieRecTitle(Movies.getSize() - 3) + " " + Movies.getMovieRecRating(Movies.getSize()-3), font);
     movie3.setCharacterSize(30);
-    movie3.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 350);
+    movie3.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 380);
 
     sf::Text movie4(Movies.getMovieRecTitle(Movies.getSize() - 4) + " " + Movies.getMovieRecRating(Movies.getSize()-4), font);
     movie4.setCharacterSize(30);
-    movie4.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 450);
+    movie4.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 480);
 
     sf::Text movie5(Movies.getMovieRecTitle(Movies.getSize() - 5) + " " + Movies.getMovieRecRating(Movies.getSize()-5), font);
     movie5.setCharacterSize(30);
-    movie5.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 550);
+    movie5.setPosition((window.getSize().x / 2) - (title.getLocalBounds().width / 2), 580);
 
-   sf::Text durationText("Duration of Sort: " + duration + " microseconds", font);
-    durationText.setCharacterSize(30);
-    durationText.setPosition((window.getSize().x / 7),100);  //fix position
 
     while (window.isOpen()) {
         sf::Event event;
@@ -316,12 +295,12 @@ void Interface::resultsWindow(MoviesList &Movies){
         sf::Color background(0, 0, 63);
         window.clear(background);
         window.draw(title);
+        window.draw(durationText);
         window.draw(movie1);
         window.draw(movie2);
         window.draw(movie3);
         window.draw(movie4);
         window.draw(movie5);
-        window.draw(durationText);
         window.display();
     }
 }

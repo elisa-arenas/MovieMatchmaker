@@ -2,7 +2,6 @@
 #define MOVIEMATCHMAKER_INTERFACE_H
 #endif //MOVIEMATCHMAKER_INTERFACE_H
 
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -18,18 +17,9 @@ class Interface{
     sf::RenderWindow window;
     string duration;
 public:
-    Interface interface();
+    //window that asks for user preferences
     void createWindow(MoviesList &Movies);
-    void setCategory(string category);
-    void setAlgorithm(string algorithm);
-    void setInput(string input);
-    string getCategory();
-    string getAlgorithm();
-    string getInput();
 
     //window that loads all results
     void resultsWindow(MoviesList &Movies);
-
-    //to start over/reset input
-    void resetWindow(MoviesList &Movies);
 };
