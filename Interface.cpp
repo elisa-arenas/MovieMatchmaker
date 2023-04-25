@@ -248,6 +248,16 @@ void Interface::createWindow(MoviesList &Movies) {
 void Interface::resultsWindow(MoviesList &Movies){
     sf::RenderWindow window(sf::VideoMode(900, 700), "Movie Matchmaker!", sf::Style::Titlebar | sf::Style::Close);
 
+    //create director's cut image
+    sf::Texture texture;
+    texture.loadFromFile("../clapper-board-joypixels.gif");
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    sf::Vector2u windowSize = window.getSize();
+    sf::Vector2u textureSize = texture.getSize();
+    sprite.setScale(.5, .5);
+    sprite.setPosition((windowSize.x/1.5), 150);
+
     //load fonts
     sf::Font font;
     font.loadFromFile("../short-baby-font/ShortBaby-Mg2w.ttf");
@@ -294,6 +304,7 @@ void Interface::resultsWindow(MoviesList &Movies){
         }
         sf::Color background(0, 0, 63);
         window.clear(background);
+        window.draw(sprite);
         window.draw(title);
         window.draw(durationText);
         window.draw(movie1);
