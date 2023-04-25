@@ -1,6 +1,9 @@
 #include "MoviesList.h"
 #include <fstream>
 #include <sstream>
+int MoviesList::getSize() {
+    return movies.size();
+}
 
 void MoviesList::quickSort(int low, int high) {// sorting by rating. assuming list is of chosen genre or year
     if (low < high)  //  code from prof aman's slides on sorting, slide 122
@@ -33,12 +36,7 @@ int MoviesList::partition(int low, int high) {
     return down;
 }
 
-
-int MoviesList::getSize() {
-    return movies.size();
-}
-
-void MoviesList::printMovies() {  // testing purposes
+void MoviesList::printMovies() {  // for testing purposes
     for (auto & movie : movies) {
         cout << movie.title << " " << movie.year << " ";
 
@@ -131,7 +129,7 @@ void MoviesList::addMovies(const string &userGenre,const string &userYear) {
             }
 
         }
-        if (!duplicate) {  //  this could be simplified but it works
+        if (!duplicate) {
             if (movieObj.genres.find(userGenre) != genres.end()) {
                 if (userYear.empty()) {
                     movies.push_back(movieObj);  // if user wants rec based on genre
